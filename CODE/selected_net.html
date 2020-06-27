@@ -1,0 +1,105 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 500px;
+            height: 500px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "lightgreen", "id": "ARUGULA (aka ROCKET)", "label": "ARUGULA (aka ROCKET)", "shape": "dot"}, {"color": "orange", "id": "KIWI (aka KIWIFRUIT)", "label": "KIWI (aka KIWIFRUIT)", "shape": "dot"}, {"color": "orange", "id": "POMEGRANATES and POMEGRANATE JUICE (see also POMEGRANATE MOLASSES)", "label": "POMEGRANATES and POMEGRANATE JUICE (see also POMEGRANATE MOLASSES)", "shape": "dot"}, {"color": "orange", "id": "ORANGES, ORANGE JUICE, and ORANGE ZEST", "label": "ORANGES, ORANGE JUICE, and ORANGE ZEST", "shape": "dot"}, {"color": "orange", "id": "GRAPES (and GRAPE JUICE)", "label": "GRAPES (and GRAPE JUICE)", "shape": "dot"}, {"color": "green", "id": "CUCUMBERS", "label": "CUCUMBERS", "shape": "dot"}, {"color": "lightgrey", "id": "OIL, OLIVE", "label": "OIL, OLIVE", "shape": "dot"}, {"color": "lightgrey", "id": "VINEGAR, RED WINE (see also VINEGAR, WINE\u2013IN GENERAL)", "label": "VINEGAR, RED WINE (see also VINEGAR, WINE\u2013IN GENERAL)", "shape": "dot"}, {"color": "lightgrey", "id": "SALT, HIMALAYAN", "label": "SALT, HIMALAYAN", "shape": "dot"}, {"color": "lightgrey", "id": "PEPPER, BLACK", "label": "PEPPER, BLACK", "shape": "dot"}]);
+        edges = new vis.DataSet([{"color": "black", "from": "POMEGRANATES and POMEGRANATE JUICE (see also POMEGRANATE MOLASSES)", "to": "OIL, OLIVE"}, {"color": "black", "from": "POMEGRANATES and POMEGRANATE JUICE (see also POMEGRANATE MOLASSES)", "to": "ORANGES, ORANGE JUICE, and ORANGE ZEST"}, {"color": "black", "from": "CUCUMBERS", "to": "OIL, OLIVE"}, {"color": "black", "from": "CUCUMBERS", "to": "VINEGAR, RED WINE (see also VINEGAR, WINE\u2013IN GENERAL)"}, {"color": "black", "from": "PEPPER, BLACK", "to": "OIL, OLIVE"}, {"color": "black", "from": "PEPPER, BLACK", "to": "SALT, HIMALAYAN"}, {"color": "lightgrey", "from": "ARUGULA (aka ROCKET)", "physics": false, "to": "CUCUMBERS"}, {"color": "lightgrey", "from": "KIWI (aka KIWIFRUIT)", "physics": false, "to": "ORANGES, ORANGE JUICE, and ORANGE ZEST"}, {"color": "lightgrey", "from": "KIWI (aka KIWIFRUIT)", "physics": false, "to": "CUCUMBERS"}, {"color": "lightgrey", "from": "KIWI (aka KIWIFRUIT)", "physics": false, "to": "GRAPES (and GRAPE JUICE)"}, {"color": "lightgrey", "from": "KIWI (aka KIWIFRUIT)", "physics": false, "to": "ARUGULA (aka ROCKET)"}, {"color": "lightgrey", "from": "KIWI (aka KIWIFRUIT)", "physics": false, "to": "POMEGRANATES and POMEGRANATE JUICE (see also POMEGRANATE MOLASSES)"}, {"color": "lightgrey", "from": "POMEGRANATES and POMEGRANATE JUICE (see also POMEGRANATE MOLASSES)", "physics": false, "to": "ARUGULA (aka ROCKET)"}, {"color": "lightgrey", "from": "POMEGRANATES and POMEGRANATE JUICE (see also POMEGRANATE MOLASSES)", "physics": false, "to": "CUCUMBERS"}, {"color": "lightgrey", "from": "POMEGRANATES and POMEGRANATE JUICE (see also POMEGRANATE MOLASSES)", "physics": false, "to": "VINEGAR, RED WINE (see also VINEGAR, WINE\u2013IN GENERAL)"}, {"color": "lightgrey", "from": "ORANGES, ORANGE JUICE, and ORANGE ZEST", "physics": false, "to": "ARUGULA (aka ROCKET)"}, {"color": "lightgrey", "from": "ORANGES, ORANGE JUICE, and ORANGE ZEST", "physics": false, "to": "GRAPES (and GRAPE JUICE)"}, {"color": "lightgrey", "from": "ORANGES, ORANGE JUICE, and ORANGE ZEST", "physics": false, "to": "OIL, OLIVE"}, {"color": "lightgrey", "from": "ORANGES, ORANGE JUICE, and ORANGE ZEST", "physics": false, "to": "PEPPER, BLACK"}, {"color": "lightgrey", "from": "ORANGES, ORANGE JUICE, and ORANGE ZEST", "physics": false, "to": "VINEGAR, RED WINE (see also VINEGAR, WINE\u2013IN GENERAL)"}, {"color": "lightgrey", "from": "GRAPES (and GRAPE JUICE)", "physics": false, "to": "ARUGULA (aka ROCKET)"}, {"color": "lightgrey", "from": "GRAPES (and GRAPE JUICE)", "physics": false, "to": "CUCUMBERS"}, {"color": "lightgrey", "from": "GRAPES (and GRAPE JUICE)", "physics": false, "to": "OIL, OLIVE"}, {"color": "lightgrey", "from": "GRAPES (and GRAPE JUICE)", "physics": false, "to": "SALT, HIMALAYAN"}, {"color": "lightgrey", "from": "GRAPES (and GRAPE JUICE)", "physics": false, "to": "VINEGAR, RED WINE (see also VINEGAR, WINE\u2013IN GENERAL)"}, {"color": "lightgrey", "from": "CUCUMBERS", "physics": false, "to": "ORANGES, ORANGE JUICE, and ORANGE ZEST"}, {"color": "lightgrey", "from": "CUCUMBERS", "physics": false, "to": "PEPPER, BLACK"}, {"color": "lightgrey", "from": "CUCUMBERS", "physics": false, "to": "SALT, HIMALAYAN"}, {"color": "lightgrey", "from": "OIL, OLIVE", "physics": false, "to": "ARUGULA (aka ROCKET)"}, {"color": "lightgrey", "from": "OIL, OLIVE", "physics": false, "to": "SALT, HIMALAYAN"}, {"color": "lightgrey", "from": "OIL, OLIVE", "physics": false, "to": "VINEGAR, RED WINE (see also VINEGAR, WINE\u2013IN GENERAL)"}, {"color": "lightgrey", "from": "VINEGAR, RED WINE (see also VINEGAR, WINE\u2013IN GENERAL)", "physics": false, "to": "ARUGULA (aka ROCKET)"}, {"color": "lightgrey", "from": "VINEGAR, RED WINE (see also VINEGAR, WINE\u2013IN GENERAL)", "physics": false, "to": "PEPPER, BLACK"}, {"color": "lightgrey", "from": "PEPPER, BLACK", "physics": false, "to": "ARUGULA (aka ROCKET)"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

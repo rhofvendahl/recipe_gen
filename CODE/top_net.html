@@ -1,0 +1,105 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 500px;
+            height: 500px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "lightgreen", "id": "LETTUCE, ROMAINE", "label": "LETTUCE, ROMAINE", "shape": "dot"}, {"color": "lightgreen", "id": "SPINACH", "label": "SPINACH", "shape": "dot"}, {"color": "orange", "id": "FIGS (see also FIGS, DRIED)", "label": "FIGS (see also FIGS, DRIED)", "shape": "dot"}, {"color": "lightblue", "id": "CHEESE, FETA", "label": "CHEESE, FETA", "shape": "dot"}, {"color": "green", "id": "CABBAGE, RED", "label": "CABBAGE, RED", "shape": "dot"}, {"color": "lightgrey", "id": "OIL, SESAME", "label": "OIL, SESAME", "shape": "dot"}, {"color": "lightgrey", "id": "VINEGAR, BALSAMIC", "label": "VINEGAR, BALSAMIC", "shape": "dot"}, {"color": "lightgrey", "id": "SALT, HIMALAYAN", "label": "SALT, HIMALAYAN", "shape": "dot"}, {"color": "lightgrey", "id": "PEPPER, BLACK", "label": "PEPPER, BLACK", "shape": "dot"}]);
+        edges = new vis.DataSet([{"color": "black", "from": "LETTUCE, ROMAINE", "to": "CHEESE, FETA"}, {"color": "black", "from": "LETTUCE, ROMAINE", "to": "OIL, SESAME"}, {"color": "black", "from": "LETTUCE, ROMAINE", "to": "VINEGAR, BALSAMIC"}, {"color": "black", "from": "SPINACH", "to": "CHEESE, FETA"}, {"color": "black", "from": "SPINACH", "to": "OIL, SESAME"}, {"color": "black", "from": "SPINACH", "to": "VINEGAR, BALSAMIC"}, {"color": "black", "from": "FIGS (see also FIGS, DRIED)", "to": "CHEESE, FETA"}, {"color": "black", "from": "FIGS (see also FIGS, DRIED)", "to": "VINEGAR, BALSAMIC"}, {"color": "black", "from": "CHEESE, FETA", "to": "OIL, SESAME"}, {"color": "black", "from": "CABBAGE, RED", "to": "CHEESE, FETA"}, {"color": "black", "from": "CABBAGE, RED", "to": "OIL, SESAME"}, {"color": "black", "from": "CABBAGE, RED", "to": "VINEGAR, BALSAMIC"}, {"color": "black", "from": "PEPPER, BLACK", "to": "OIL, SESAME"}, {"color": "black", "from": "PEPPER, BLACK", "to": "SALT, HIMALAYAN"}, {"color": "lightgrey", "from": "LETTUCE, ROMAINE", "physics": false, "to": "PEPPER, BLACK"}, {"color": "lightgrey", "from": "LETTUCE, ROMAINE", "physics": false, "to": "SALT, HIMALAYAN"}, {"color": "lightgrey", "from": "SPINACH", "physics": false, "to": "FIGS (see also FIGS, DRIED)"}, {"color": "lightgrey", "from": "SPINACH", "physics": false, "to": "PEPPER, BLACK"}, {"color": "lightgrey", "from": "SPINACH", "physics": false, "to": "SALT, HIMALAYAN"}, {"color": "lightgrey", "from": "SPINACH", "physics": false, "to": "CABBAGE, RED"}, {"color": "lightgrey", "from": "SPINACH", "physics": false, "to": "LETTUCE, ROMAINE"}, {"color": "lightgrey", "from": "FIGS (see also FIGS, DRIED)", "physics": false, "to": "OIL, SESAME"}, {"color": "lightgrey", "from": "FIGS (see also FIGS, DRIED)", "physics": false, "to": "PEPPER, BLACK"}, {"color": "lightgrey", "from": "CHEESE, FETA", "physics": false, "to": "PEPPER, BLACK"}, {"color": "lightgrey", "from": "CHEESE, FETA", "physics": false, "to": "VINEGAR, BALSAMIC"}, {"color": "lightgrey", "from": "CABBAGE, RED", "physics": false, "to": "FIGS (see also FIGS, DRIED)"}, {"color": "lightgrey", "from": "CABBAGE, RED", "physics": false, "to": "LETTUCE, ROMAINE"}, {"color": "lightgrey", "from": "CABBAGE, RED", "physics": false, "to": "PEPPER, BLACK"}, {"color": "lightgrey", "from": "CABBAGE, RED", "physics": false, "to": "SALT, HIMALAYAN"}, {"color": "lightgrey", "from": "OIL, SESAME", "physics": false, "to": "VINEGAR, BALSAMIC"}, {"color": "lightgrey", "from": "VINEGAR, BALSAMIC", "physics": false, "to": "PEPPER, BLACK"}, {"color": "lightgrey", "from": "VINEGAR, BALSAMIC", "physics": false, "to": "SALT, HIMALAYAN"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
